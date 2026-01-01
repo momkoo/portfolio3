@@ -6,15 +6,89 @@
 
 ## 목차
 
-1. [사전 체크리스트](#사전-체크리스트)
-2. [netlify.toml 설정](#netlifytom-설정)
-3. [Next.js 15+ 필수 변경사항](#nextjs-15-필수-변경사항)
-4. [TypeScript 엄격 모드 대응](#typescript-엄격-모드-대응)
-5. [Prisma 설정](#prisma-설정)
-6. [환경변수 설정](#환경변수-설정)
+1. [Netlify 환경변수 설정 (필수!)](#netlify-환경변수-설정-필수)
+2. [사전 체크리스트](#사전-체크리스트)
+3. [netlify.toml 설정](#netlifytom-설정)
+4. [Next.js 15+ 필수 변경사항](#nextjs-15-필수-변경사항)
+5. [TypeScript 엄격 모드 대응](#typescript-엄격-모드-대응)
+6. [Prisma 설정](#prisma-설정)
 7. [Supabase 연결](#supabase-연결)
 8. [일반적인 오류와 해결책](#일반적인-오류와-해결책)
 9. [배포 체크리스트](#배포-체크리스트)
+
+---
+
+## Netlify 환경변수 설정 (필수!)
+
+> ⚠️ **중요:** 환경변수를 설정하지 않으면 500 Server Error 발생!
+
+### 설정 방법
+
+1. **Netlify Dashboard** 접속
+2. 해당 사이트 선택
+3. **Site configuration** (또는 Site settings) 클릭
+4. 좌측 메뉴에서 **Environment variables** 클릭
+5. **Add a variable** 버튼으로 아래 변수들 추가
+
+### 필수 환경변수 목록
+
+아래 **4개 변수는 반드시 설정**해야 합니다:
+
+| Key | Value | 설명 |
+|-----|-------|------|
+| `DATABASE_URL` | `postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true` | Supabase Transaction Pooler 연결 문자열 |
+| `DIRECT_URL` | `postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres` | Supabase Direct 연결 문자열 |
+| `NEXTAUTH_URL` | `https://your-site.netlify.app` | 배포된 사이트의 전체 URL |
+| `NEXTAUTH_SECRET` | `K7gNx2Qm9pLwYv...` (32자 이상) | 랜덤 시크릿 키 |
+
+### NEXTAUTH_SECRET 생성 방법
+
+터미널에서 실행:
+```bash
+openssl rand -base64 32
+```
+
+또는 온라인 생성기: https://generate-secret.vercel.app/32
+
+### Supabase 연결 문자열 가져오기
+
+1. **Supabase Dashboard** → 프로젝트 선택
+2. **Settings** → **Database**
+3. **Connection string** 섹션
+4. **URI** 탭 선택
+5. 복사할 것:
+   - **Transaction pooler** (Port 6543) → `DATABASE_URL`
+   - **Session pooler** 또는 **Direct** (Port 5432) → `DIRECT_URL`
+
+### 환경변수 설정 화면 예시
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Environment variables                                       │
+├─────────────────────────────────────────────────────────────┤
+│  Key                  │ Value                                │
+├───────────────────────┼─────────────────────────────────────┤
+│  DATABASE_URL         │ postgresql://postgres.abc...         │
+│  DIRECT_URL           │ postgresql://postgres.abc...         │
+│  NEXTAUTH_URL         │ https://mysite.netlify.app           │
+│  NEXTAUTH_SECRET      │ K7gNx2Qm9pLwYvZ8BfTc...              │
+└───────────────────────┴─────────────────────────────────────┘
+```
+
+### 선택적 환경변수 (Supabase Storage 사용시)
+
+| Key | Value | 설명 |
+|-----|-------|------|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://[PROJECT-REF].supabase.co` | Supabase 프로젝트 URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1...` | Supabase 익명 키 |
+
+### 설정 후 재배포
+
+환경변수 추가/수정 후 반드시:
+
+1. **Deploys** 탭으로 이동
+2. **Trigger deploy** 클릭
+3. **Clear cache and deploy** 선택
 
 ---
 
