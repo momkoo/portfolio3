@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Journal } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminJournals() {
-    let journals = [];
-    let error = null;
+    let journals: Journal[] = [];
+    let error: string | null = null;
 
     try {
         journals = await prisma.journal.findMany({
@@ -52,7 +52,7 @@ export default async function AdminJournals() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {journals.map((journal: any) => (
+                                {journals.map((journal) => (
                                     <tr key={journal.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm font-medium text-gray-900">{journal.title}</div>
