@@ -1,17 +1,18 @@
 import JournalForm from '@/components/admin/JournalForm';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Journal } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
-export default async function EditJournalPage({ params }: { params: { id: string } }) {
-    let journal = null;
-    let error = null;
+export default async function EditJournalPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    let journal: Journal | null = null;
+    let error: string | null = null;
 
     try {
         journal = await prisma.journal.findUnique({
-            where: { id: params.id },
+            where: { id },
         });
 
         if (!journal) {

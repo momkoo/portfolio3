@@ -1,17 +1,18 @@
 import ProjectForm from '@/components/admin/ProjectForm';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Project } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
-export default async function EditProjectPage({ params }: { params: { id: string } }) {
-    let project = null;
-    let error = null;
+export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    let project: Project | null = null;
+    let error: string | null = null;
 
     try {
         project = await prisma.project.findUnique({
-            where: { id: params.id },
+            where: { id },
         });
 
         if (!project) {

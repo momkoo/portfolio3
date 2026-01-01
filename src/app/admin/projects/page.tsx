@@ -1,14 +1,16 @@
 import Link from 'next/link';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Project, Category } from '@prisma/client';
 
 const prisma = new PrismaClient();
+
+type ProjectWithCategory = Project & { category: Category | null };
 
 // Force dynamic rendering to ensure fresh data
 export const dynamic = 'force-dynamic';
 
 export default async function AdminProjects() {
-    let projects = [];
-    let error = null;
+    let projects: ProjectWithCategory[] = [];
+    let error: string | null = null;
 
     try {
         projects = await prisma.project.findMany({
@@ -54,7 +56,7 @@ export default async function AdminProjects() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {projects.map((project: any) => (
+                                {projects.map((project) => (
                                     <tr key={project.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm font-medium text-gray-900">{project.title}</div>
