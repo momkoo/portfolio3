@@ -20,12 +20,15 @@ export const authOptions: NextAuthOptions = {
                     throw new Error("Invalid credentials");
                 }
 
-                // Temporary Hardcoded Admin (Bypass DB)
-                if (credentials.email === "admin@vantage.kr" && credentials.password === "admin1234") {
+                // Temporary Hardcoded Admin (Bypass DB) - MOVED TO ENV
+                const adminEmail = process.env.ADMIN_EMAIL;
+                const adminPassword = process.env.ADMIN_PASSWORD;
+
+                if (adminEmail && adminPassword && credentials.email === adminEmail && credentials.password === adminPassword) {
                     return {
                         id: "temp-admin",
                         name: "Admin User",
-                        email: "admin@vantage.kr",
+                        email: adminEmail,
                         role: "admin"
                     };
                 }
