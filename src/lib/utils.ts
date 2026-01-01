@@ -1,0 +1,20 @@
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
+
+export function formatDate(date: Date | string): string {
+    const d = new Date(date);
+    return d.toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+}
+
+export function formatDateShort(date: Date | string): string {
+    const d = new Date(date);
+    return `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}`;
+}
