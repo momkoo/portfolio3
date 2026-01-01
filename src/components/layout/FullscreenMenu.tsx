@@ -11,6 +11,7 @@ const menuItems = [
     { label: 'WORK', href: '/work' },
     { label: 'ABOUT', href: '/about' },
     { label: 'JOURNAL', href: '/journal' },
+    { label: 'LOCATION', href: '/location' },
     { label: 'CONTACT', href: '/contact' },
 ];
 

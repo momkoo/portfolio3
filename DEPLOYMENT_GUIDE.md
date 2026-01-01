@@ -82,24 +82,27 @@ openssl rand -base64 32
 | `NEXT_PUBLIC_SUPABASE_URL` | `https://[PROJECT-REF].supabase.co` | Supabase 프로젝트 URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1...` | Supabase 익명 키 |
 
-### Imgur 이미지 업로드 설정 (선택)
+### ImgBB 이미지 업로드 설정 (선택)
 
 Admin에서 이미지 업로드 기능을 사용하려면:
 
 | Key | Value | 설명 |
 |-----|-------|------|
-| `IMGUR_CLIENT_ID` | `a1b2c3d4e5f6g7h` | Imgur API Client ID |
+| `IMGBB_API_KEY` | `a1b2c3d4e5f6g7h8i9j0` | ImgBB API Key |
 
-**Imgur Client ID 발급 방법:**
+**ImgBB API Key 발급 방법:**
 
-1. https://api.imgur.com/oauth2/addclient 접속
-2. Imgur 계정으로 로그인
-3. 앱 등록:
-   - **Application name**: `My Portfolio` (원하는 이름)
-   - **Authorization type**: `OAuth 2 authorization without a callback URL`
-   - **Email**: 본인 이메일
-4. **Submit** 클릭
-5. **Client ID** 복사 (Client Secret은 필요 없음)
+1. https://imgbb.com 접속
+2. **Sign up** 또는 로그인
+3. https://api.imgbb.com 접속
+4. **Get API key** 클릭
+5. API Key 복사
+
+**ImgBB 특징:**
+- 무료 사용
+- 이미지당 최대 32MB
+- 무제한 업로드
+- 영구 저장
 
 ### 설정 후 재배포
 

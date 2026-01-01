@@ -25,7 +25,13 @@ export default function Header() {
             >
                 <Link
                     href="/"
-                    className="font-[family-name:var(--font-archivo-black)] text-2xl tracking-tighter z-[100]"
+                    onClick={(e) => {
+                        if (window.location.pathname === '/') {
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    }}
+                    className="font-[family-name:var(--font-archivo-black)] text-2xl tracking-tighter z-[100] cursor-pointer"
                 >
                     VANTAGE
                 </Link>

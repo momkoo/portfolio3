@@ -13,9 +13,9 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
 
     return (
         <>
-            <Header />
+            <Header key={`header-${pathname}`} />
             <main>{children}</main>
-            <Footer />
+            <Footer key={`footer-${pathname}`} />
         </>
     );
 }

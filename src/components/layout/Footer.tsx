@@ -13,6 +13,14 @@ export default function Footer() {
                     </span>
                 </div>
 
+                <nav className="flex flex-wrap justify-center gap-6 text-sm font-medium text-white/70">
+                    <Link href="/work" className="hover:text-white transition-colors">WORK</Link>
+                    <Link href="/about" className="hover:text-white transition-colors">ABOUT</Link>
+                    <Link href="/journal" className="hover:text-white transition-colors">JOURNAL</Link>
+                    <Link href="/location" className="hover:text-white transition-colors">LOCATION</Link>
+                    <Link href="/contact" className="hover:text-white transition-colors">CONTACT</Link>
+                </nav>
+
                 <div className="flex gap-8 text-xs tracking-widest text-white/50">
                     <span>© 2024 VANTAGE STUDIO</span>
                     <span>ALL RIGHTS RESERVED</span>

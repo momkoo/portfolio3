@@ -12,7 +12,7 @@ export default function ContactSection() {
                         <span className="block">이야기를</span>
                         <span className="block text-amber-500">만들까요</span>
                     </h2>
-                    <p className="text-gray-500 text-lg mb-10 max-w-xl mx-auto">작업 의뢰, 협업 제안, 또는 간단한 인사가 궁금하시다면<br className="hidden md:block" /> 언제든지 편하게 연락주세요.</p>
+                    <p className="text-gray-500 text-lg mb-10 max-w-xl mx-auto">작업 의뢰, 협업 제안, 또는 간단한 문의가 있으시다면<br className="hidden md:block" /> 언제든지 편하게 연락주세요.</p>
                     <a href="mailto:hello@vantage.kr" className="text-2xl md:text-4xl font-bold text-gray-900 hover:text-amber-500 transition-colors underline decoration-2 decoration-gray-300 hover:decoration-amber-500 underline-offset-8">
                         HELLO@VANTAGE.KR
                     </a>

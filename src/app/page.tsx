@@ -5,6 +5,7 @@ import {
   WorkSection,
   AboutSection,
   JournalSection,
+  LocationSection,
   ContactSection,
 } from "@/components";
 import { Project, Category, Journal } from "@prisma/client";
@@ -47,6 +48,7 @@ export default async function Home() {
           <p className="text-gray-500">Unable to load content. Please try again later.</p>
         </section>
         <AboutSection />
+        <LocationSection />
         <ContactSection />
       </>
     );
@@ -56,9 +58,12 @@ export default async function Home() {
     <>
       <HeroSection />
       <MarqueeSection />
+      {/* Work Section with Dynamic Data */}
       <WorkSection projects={projects} />
       <AboutSection />
+      {/* Journal Section with Dynamic Data */}
       <JournalSection journals={journals} />
+      <LocationSection />
       <ContactSection />
     </>
   );

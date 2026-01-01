@@ -13,4 +13,5 @@ export { default as MarqueeSection } from './sections/MarqueeSection';
 export { default as WorkSection } from './sections/WorkSection';
 export { default as AboutSection } from './sections/AboutSection';
 export { default as JournalSection } from './sections/JournalSection';
+export { default as LocationSection } from './sections/LocationSection';
 export { default as ContactSection } from './sections/ContactSection';

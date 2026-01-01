@@ -8,10 +8,10 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const clientId = process.env.IMGUR_CLIENT_ID;
-    if (!clientId) {
+    const apiKey = process.env.IMGBB_API_KEY;
+    if (!apiKey) {
         return NextResponse.json(
-            { error: 'Imgur Client ID not configured' },
+            { error: 'ImgBB API Key not configured' },
             { status: 500 }
         );
     }
@@ -29,32 +29,31 @@ export async function POST(request: Request) {
         const buffer = Buffer.from(bytes);
         const base64Image = buffer.toString('base64');
 
-        // Upload to Imgur
-        const imgurResponse = await fetch('https://api.imgur.com/3/image', {
+        // Upload to ImgBB
+        const imgbbFormData = new FormData();
+        imgbbFormData.append('key', apiKey);
+        imgbbFormData.append('image', base64Image);
+
+        const imgbbResponse = await fetch('https://api.imgbb.com/1/upload', {
             method: 'POST',
-            headers: {
-                'Authorization': `Client-ID ${clientId}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                image: base64Image,
-                type: 'base64',
-            }),
+            body: imgbbFormData,
         });
 
-        const imgurData = await imgurResponse.json();
+        const imgbbData = await imgbbResponse.json();
 
-        if (!imgurData.success) {
-            console.error('Imgur upload failed:', imgurData);
+        if (!imgbbData.success) {
+            console.error('ImgBB upload failed:', imgbbData);
             return NextResponse.json(
-                { error: 'Failed to upload to Imgur' },
+                { error: imgbbData.error?.message || 'Failed to upload to ImgBB' },
                 { status: 500 }
             );
         }
 
         return NextResponse.json({
-            url: imgurData.data.link,
-            deleteHash: imgurData.data.deletehash,
+            url: imgbbData.data.url,
+            displayUrl: imgbbData.data.display_url,
+            deleteUrl: imgbbData.data.delete_url,
+            thumbnail: imgbbData.data.thumb?.url,
         });
     } catch (error) {
         console.error('Upload error:', error);
