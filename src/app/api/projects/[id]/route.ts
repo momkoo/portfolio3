@@ -5,17 +5,21 @@ import { authOptions } from '@/lib/auth';
 
 const prisma = new PrismaClient();
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
     const session = await getServerSession(authOptions);
     if (!session) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     try {
+        const { id } = await params;
         const body = await request.json();
 
         const project = await prisma.project.update({
-            where: { id: params.id },
+            where: { id },
             data: {
                 title: body.title,
                 titleKr: body.titleKr,
@@ -24,7 +28,6 @@ export async function PUT(request: Request, { params }: { params: { id: string }
                 service: body.service,
                 description: body.description,
                 mainImage: body.mainImage,
-                // category update logic omitted for brevity, assumes categoryId is valid if changed
                 categoryId: body.categoryId || undefined,
             },
         });
@@ -36,15 +39,19 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
     const session = await getServerSession(authOptions);
     if (!session) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     try {
+        const { id } = await params;
         await prisma.project.delete({
-            where: { id: params.id },
+            where: { id },
         });
 
         return NextResponse.json({ success: true });
