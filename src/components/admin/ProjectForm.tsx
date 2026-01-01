@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import ImageUpload from './ImageUpload';
 
 export default function ProjectForm({ initialData }: { initialData?: any }) {
     const router = useRouter();
@@ -127,18 +128,11 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
                 <p className="text-xs text-gray-500 mt-1">* Requires matching Category ID in DB</p>
             </div>
 
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Main Image URL</label>
-                <input
-                    type="url"
-                    name="mainImage"
-                    required
-                    value={formData.mainImage}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-amber-500 outline-none"
-                    placeholder="https://..."
-                />
-            </div>
+            <ImageUpload
+                label="Main Image"
+                value={formData.mainImage}
+                onChange={(url) => setFormData(prev => ({ ...prev, mainImage: url }))}
+            />
 
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>

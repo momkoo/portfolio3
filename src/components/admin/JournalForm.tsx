@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import ImageUpload from './ImageUpload';
 
 export default function JournalForm({ initialData }: { initialData?: any }) {
     const router = useRouter();
@@ -91,29 +92,22 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Cover Image URL</label>
-                    <input
-                        type="url"
-                        name="imageUrl"
-                        value={formData.imageUrl}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-amber-500 outline-none"
-                        placeholder="https://..."
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                    <input
-                        type="date"
-                        name="date"
-                        required
-                        value={formData.date}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-amber-500 outline-none"
-                    />
-                </div>
+            <ImageUpload
+                label="Cover Image"
+                value={formData.imageUrl}
+                onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+            />
+
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                <input
+                    type="date"
+                    name="date"
+                    required
+                    value={formData.date}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-amber-500 outline-none"
+                />
             </div>
 
             <div className="flex items-center gap-2">
