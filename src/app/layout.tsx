@@ -40,6 +40,12 @@ export default function RootLayout({
     <html lang="ko" className={`${notoSansKR.variable} ${archivoBlack.variable} ${spaceMono.variable}`} suppressHydrationWarning>
       <head>
         <link rel="stylesheet" as="style" crossOrigin="anonymous" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+        {/* Preload hero poster for faster LCP */}
+        <link rel="preload" as="image" href="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1920" />
+        {/* Preconnect to external hosts for faster loading */}
+        <link rel="preconnect" href="https://i.ibb.co" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://assets.mixkit.co" />
       </head>
       <body className={`font-pretendard font-sans`} suppressHydrationWarning>
         <NextAuthProvider>

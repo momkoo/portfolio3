@@ -8,8 +8,11 @@ export const prisma =
     globalForPrisma.prisma ??
     new PrismaClient({
         log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+        // Optimize connection for serverless environments
+        datasourceUrl: process.env.DATABASE_URL,
     });
 
+// Always use singleton in production AND development to avoid connection pool exhaustion
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 export default prisma;

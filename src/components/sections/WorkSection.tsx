@@ -83,6 +83,7 @@ export default function WorkSection({ projects }: WorkSectionProps) {
                                         src={project.mainImage || '/images/placeholder.jpg'}
                                         alt={project.title}
                                         fill
+                                        sizes="(max-width: 768px) 100vw, 50vw"
                                         className="object-cover transition-transform duration-700 group-hover:scale-105 group-hover:brightness-110"
                                     />
                                     {/* View Project Button Effect - Matched to styles.css .view-project and .project-overlay */}

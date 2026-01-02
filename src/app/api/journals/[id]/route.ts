@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-
-const prisma = new PrismaClient();
+import { revalidateTag } from 'next/cache';
 
 export async function PUT(
     request: Request,
@@ -30,6 +29,9 @@ export async function PUT(
             },
         });
 
+        // Revalidate cache
+        await revalidateTag('journals', 'max');
+
         return NextResponse.json(journal);
     } catch (error) {
         console.error('Failed to update journal:', error);
@@ -51,6 +53,9 @@ export async function DELETE(
         await prisma.journal.delete({
             where: { id },
         });
+
+        // Revalidate cache
+        await revalidateTag('journals', 'max');
 
         return NextResponse.json({ success: true });
     } catch (error) {

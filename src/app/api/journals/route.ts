@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-
-const prisma = new PrismaClient();
+import { revalidateTag } from 'next/cache';
 
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
@@ -25,6 +24,9 @@ export async function POST(request: Request) {
                 tags: [] // Tags handling can be added here or in future updates
             },
         });
+
+        // Revalidate cache
+        await revalidateTag('journals', 'max');
 
         return NextResponse.json(journal);
     } catch (error) {
