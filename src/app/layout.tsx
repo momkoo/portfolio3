@@ -37,11 +37,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${notoSansKR.variable} ${archivoBlack.variable} ${spaceMono.variable}`}>
+    <html lang="ko" className={`${notoSansKR.variable} ${archivoBlack.variable} ${spaceMono.variable}`} suppressHydrationWarning>
       <head>
         <link rel="stylesheet" as="style" crossOrigin="anonymous" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
       </head>
-      <body className={`font-pretendard font-sans`}>
+      <body className={`font-pretendard font-sans`} suppressHydrationWarning>
         <NextAuthProvider>
           <ClientComponents />
           <GlobalLayout>

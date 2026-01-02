@@ -15,10 +15,6 @@ type JournalData = {
 };
 
 export default function JournalDetailClient({ journal }: { journal: JournalData }) {
-    // Split content by \n\n if simple storage, or just render as is if formatted?
-    // Seed script joined with \n\n. So split it back.
-    const paragraphs = journal.content ? journal.content.split('\n\n') : [];
-
     return (
         <div className="min-h-screen bg-[#fafafa] text-gray-900">
             <article className="max-w-3xl mx-auto px-6 md:px-12 py-32 md:py-40">
@@ -51,13 +47,10 @@ export default function JournalDetailClient({ journal }: { journal: JournalData 
                 </div>
 
                 {/* Content Body */}
-                <div className="prose prose-lg prose-gray max-w-none">
-                    {paragraphs.map((paragraph, index) => (
-                        <p key={index} className="mb-6 leading-8 text-gray-700">
-                            {paragraph}
-                        </p>
-                    ))}
-                </div>
+                <div
+                    className="prose max-w-none text-gray-700"
+                    dangerouslySetInnerHTML={{ __html: journal.content }}
+                />
 
                 {/* Tags */}
                 {journal.tags && journal.tags.length > 0 && (

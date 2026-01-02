@@ -42,14 +42,14 @@ export default function JournalSection({ journals }: JournalSectionProps) {
                                 />
                             </div>
                             <div className="p-8 border-t-0">
-                                <span className="text-xs text-amber-500 font-medium mb-2 block">{journal.date}</span>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-amber-500 transition-colors">
+                                <span className="text-sm text-amber-500 font-medium mb-2 block">{journal.date}</span>
+                                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-amber-500 transition-colors">
                                     {journal.title}
                                 </h3>
-                                <p className="text-sm text-gray-600 leading-relaxed mb-6 line-clamp-2">
+                                <p className="text-base text-gray-600 leading-relaxed mb-6 line-clamp-2">
                                     {journal.excerpt}
                                 </p>
-                                <div className="inline-flex items-center text-sm font-bold text-gray-900 group-hover:text-amber-500 transition-colors">
+                                <div className="inline-flex items-center text-base font-bold text-gray-900 group-hover:text-amber-500 transition-colors">
                                     더 보기 <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
                                 </div>
                             </div>

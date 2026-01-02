@@ -91,6 +91,18 @@ model ContactMessage {
   createdAt DateTime @default(now())
 }
 
+// 미디어 라이브러리
+model Media {
+  id          String   @id @default(cuid())
+  url         String   // ImgBB URL
+  displayUrl  String?  // Display URL
+  thumbnailUrl String? // Thumbnail URL
+  deleteUrl   String?  // ImgBB delete URL
+  filename    String?  // Original filename
+  size        Int?     // File size in bytes
+  createdAt   DateTime @default(now())
+}
+
 // 관리자 계정 (NextAuth)
 model User {
   id            String    @id @default(cuid())

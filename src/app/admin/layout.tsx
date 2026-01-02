@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 
 export default function AdminLayout({
@@ -10,6 +9,7 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
+    const router = useRouter();
 
     const navigation = [
         { name: 'Dashboard', href: '/admin' },
@@ -17,6 +17,11 @@ export default function AdminLayout({
         { name: 'Journals', href: '/admin/journals' },
         { name: 'Settings', href: '/admin/settings' },
     ];
+
+    const handleNavigation = (href: string) => {
+        router.push(href);
+        router.refresh();
+    };
 
     // Login page should not use this layout's UI elements (optional, but handled by Next.js layout nesting usually. 
     // If login is under /admin/login, it inherits this. We might want to exclude sidebar for login.)
@@ -38,18 +43,19 @@ export default function AdminLayout({
                 </div>
                 <nav className="flex-1 p-4 space-y-1">
                     {navigation.map((item) => {
-                        const isActive = pathname === item.href;
+                        const isActive = pathname === item.href ||
+                            (item.href !== '/admin' && pathname?.startsWith(item.href));
                         return (
-                            <Link
+                            <button
                                 key={item.name}
-                                href={item.href}
-                                className={`flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors ${isActive
+                                onClick={() => handleNavigation(item.href)}
+                                className={`w-full text-left flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors ${isActive
                                         ? 'bg-amber-50 text-amber-600'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                     }`}
                             >
                                 {item.name}
-                            </Link>
+                            </button>
                         );
                     })}
                 </nav>

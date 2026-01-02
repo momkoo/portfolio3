@@ -6,7 +6,14 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { marked, Marked } from 'marked';
+
+// Configure marked for better parsing
+const markedInstance = new Marked({
+    breaks: true, // Convert \n to <br>
+    gfm: true,    // GitHub Flavored Markdown
+});
 
 interface RichTextEditorProps {
     content: string;
@@ -43,6 +50,7 @@ export default function RichTextEditor({
             Underline,
         ],
         content,
+        immediatelyRender: false, // Fix for React 19 SSR
         editorProps: {
             attributes: {
                 class: 'prose prose-sm sm:prose max-w-none focus:outline-none min-h-[300px] p-4',
@@ -78,6 +86,18 @@ export default function RichTextEditor({
             editor.chain().focus().unsetLink().run();
         }
     }, [editor]);
+
+    const [showMarkdownModal, setShowMarkdownModal] = useState(false);
+    const [markdownText, setMarkdownText] = useState('');
+
+    const importMarkdown = useCallback(async () => {
+        if (markdownText && editor) {
+            const html = await markedInstance.parse(markdownText);
+            editor.chain().focus().setContent(html).run();
+            setMarkdownText('');
+            setShowMarkdownModal(false);
+        }
+    }, [editor, markdownText]);
 
     if (!editor) {
         return <div className="animate-pulse bg-gray-100 h-64 rounded-lg" />;
@@ -200,7 +220,7 @@ export default function RichTextEditor({
                 </div>
 
                 {/* History */}
-                <div className="flex gap-1">
+                <div className="flex gap-1 border-r border-gray-300 pr-2 mr-2">
                     <ToolbarButton
                         onClick={() => editor.chain().focus().undo().run()}
                         disabled={!editor.can().undo()}
@@ -216,6 +236,16 @@ export default function RichTextEditor({
                         <span className="text-xs">Redo</span>
                     </ToolbarButton>
                 </div>
+
+                {/* Markdown Import */}
+                <div className="flex gap-1">
+                    <ToolbarButton
+                        onClick={() => setShowMarkdownModal(true)}
+                        title="Import Markdown"
+                    >
+                        <span className="text-xs font-mono">MD</span>
+                    </ToolbarButton>
+                </div>
             </div>
 
             {/* Editor */}
@@ -225,6 +255,60 @@ export default function RichTextEditor({
             <div className="bg-gray-50 border-t border-gray-200 px-4 py-2 text-xs text-gray-500">
                 {editor.storage.characterCount?.characters?.() ?? 0} characters
             </div>
+
+            {/* Markdown Import Modal */}
+            {showMarkdownModal && (
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+                        <div className="flex justify-between items-center p-4 border-b">
+                            <h3 className="text-lg font-bold text-gray-900">Markdown 가져오기</h3>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setShowMarkdownModal(false);
+                                    setMarkdownText('');
+                                }}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="p-4 flex-1 overflow-y-auto">
+                            <p className="text-sm text-gray-600 mb-3">
+                                Markdown 텍스트를 붙여넣으세요. 자동으로 서식이 적용됩니다.
+                            </p>
+                            <textarea
+                                value={markdownText}
+                                onChange={(e) => setMarkdownText(e.target.value)}
+                                placeholder="# 제목&#10;&#10;**굵은 글씨**, *기울임*, [링크](url)&#10;&#10;- 목록 아이템&#10;- 또 다른 아이템"
+                                className="w-full h-64 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm focus:ring-amber-500 focus:border-amber-500 resize-none"
+                            />
+                        </div>
+                        <div className="p-4 border-t bg-gray-50 flex justify-end gap-2">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setShowMarkdownModal(false);
+                                    setMarkdownText('');
+                                }}
+                                className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+                            >
+                                취소
+                            </button>
+                            <button
+                                type="button"
+                                onClick={importMarkdown}
+                                disabled={!markdownText.trim()}
+                                className="px-4 py-2 text-sm text-white bg-amber-500 rounded-md hover:bg-amber-600 disabled:opacity-50"
+                            >
+                                가져오기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

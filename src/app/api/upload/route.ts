@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
@@ -49,11 +50,24 @@ export async function POST(request: Request) {
             );
         }
 
+        // Save to Media library
+        const media = await prisma.media.create({
+            data: {
+                url: imgbbData.data.url,
+                displayUrl: imgbbData.data.display_url,
+                thumbnailUrl: imgbbData.data.thumb?.url,
+                deleteUrl: imgbbData.data.delete_url,
+                filename: file.name,
+                size: file.size,
+            },
+        });
+
         return NextResponse.json({
-            url: imgbbData.data.url,
-            displayUrl: imgbbData.data.display_url,
-            deleteUrl: imgbbData.data.delete_url,
-            thumbnail: imgbbData.data.thumb?.url,
+            id: media.id,
+            url: media.url,
+            displayUrl: media.displayUrl,
+            deleteUrl: media.deleteUrl,
+            thumbnail: media.thumbnailUrl,
         });
     } catch (error) {
         console.error('Upload error:', error);
