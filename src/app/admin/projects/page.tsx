@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { PrismaClient, Project, Category } from '@prisma/client';
+import DeleteButton from '@/components/admin/DeleteButton';
 
 const prisma = new PrismaClient();
 
@@ -70,9 +71,9 @@ export default async function AdminProjects() {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {project.year}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <Link href={`/admin/projects/${project.id}`} className="text-amber-600 hover:text-amber-900 mr-4">Edit</Link>
-                                            {/* Delete button would go here (requires client component or server action) */}
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                                            <Link href={`/admin/projects/${project.id}`} className="text-amber-600 hover:text-amber-900">Edit</Link>
+                                            <DeleteButton id={project.id} type="project" title={project.title} />
                                         </td>
                                     </tr>
                                 ))}

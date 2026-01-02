@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ImageUpload from './ImageUpload';
+import RichTextEditor from '../editor/RichTextEditor';
 
 export default function JournalForm({ initialData }: { initialData?: any }) {
     const router = useRouter();
@@ -81,14 +82,11 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Content (Markdown supported)</label>
-                <textarea
-                    name="content"
-                    rows={10}
-                    required
-                    value={formData.content}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-amber-500 outline-none font-mono text-sm"
+                <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                <RichTextEditor
+                    content={formData.content}
+                    onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                    placeholder="Write your journal entry..."
                 />
             </div>
 

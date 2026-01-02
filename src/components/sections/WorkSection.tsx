@@ -14,7 +14,7 @@ type ProjectWithCategory = {
     category: {
         name: string;
         nameKr: string;
-    };
+    } | null;
     order: number;
 };
 
@@ -35,7 +35,7 @@ export default function WorkSection({ projects }: WorkSectionProps) {
 
     const filteredProjects = activeFilter === 'all'
         ? projects
-        : projects.filter((p) => p.category.name === activeFilter);
+        : projects.filter((p) => p.category?.name === activeFilter);
 
     return (
         <section id="work" className="py-24 px-6 md:px-12 lg:px-24 bg-white">
@@ -98,7 +98,7 @@ export default function WorkSection({ projects }: WorkSectionProps) {
                                         <h3 className="text-xl font-bold text-gray-900 group-hover:text-amber-500 transition-colors">{project.title}</h3>
                                     </div>
                                     <span className="text-sm text-gray-500 group-hover:text-gray-900 transition-colors">
-                                        {project.category.nameKr}
+                                        {project.category?.nameKr || 'Uncategorized'}
                                     </span>
                                 </div>
                             </Link>
